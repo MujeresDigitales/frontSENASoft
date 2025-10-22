@@ -22,12 +22,10 @@
 
         
         <div class="col-md-6">
-          <label for="evento" class="form-label">Listado de eventos</label>
-          <select id="evento" class="form-select" required>
+          <label for="eventoSelect" class="form-label">Listado de eventos</label>
+          <select id="eventoSelect" class="form-select" required>
             <option value="">Seleccione evento</option>
-            <option value="Feria de las flores en medellin">Feria de las flores en medellin</option>
-            <option value="Feria de las flores en medellin">Feria de las flores en medellin</option>
-            
+            <!-- Se cargarán dinámicamente desde el backend -->
           </select>
         </div>
 
@@ -68,6 +66,7 @@
             <th>Nombre</th>
             <th>Género</th>
             <th>Ciudad Natal</th>
+            <th>Evento</th>
           </tr>
         </thead>
         <tbody id="artistasTableBody">
@@ -77,6 +76,6 @@
     </div>
   </div>
 
-  <script src="./js/artistas.js"></script>
+  <script src="../js/artistas.js"></script>
 </body>
 </html>

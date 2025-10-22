@@ -4,36 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eventos Disponibles</title>
+
+  <!-- Bootstrap y estilos -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../css/consultaEventos.css">
 </head>
-<body class="bg-light">
 
- 
+<body>
+  <div class="container-fluid py-5 bg-light">
+    <div class="row justify-content-center">
+      
+      <!-- ======================================================
+           🟪 FILTROS DE BÚSQUEDA (BARRA LATERAL)
+           ====================================================== -->
+      <aside class="col-lg-3 col-md-4 mb-4">
+        <div class="card border-0 shadow-sm p-4 rounded-4">
+          <h5 class="fw-bold text-secondary mb-3">
+            <i class="bi bi-funnel-fill me-2 text-primary"></i> Filtrar eventos
+          </h5>
 
-  <div class="container mt-5">
-    <h2 class="text-center mb-4">Eventos Disponibles</h2>
+          <div class="mb-3">
+            <input type="text" id="buscarNombre" class="form-control" placeholder="🔍 Buscar evento...">
+          </div>
 
-    <!-- Buscador -->
-    <div class="card p-3 shadow-sm mb-4">
-      <div class="row g-3 align-items-center">
-        <div class="col-md-4">
-          <input type="text" id="buscarNombre" class="form-control" placeholder="Buscar por nombre...">
+          <div class="mb-3">
+            <select id="buscarDepartamento" class="form-select">
+              <option value="">Departamento</option>
+              <option value="Cesar">Cesar</option>
+              <option value="Antioquia">Antioquia</option>
+              <option value="Atlántico">Atlántico</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <select id="buscarMunicipio" class="form-select">
+              <option value="">Municipio</option>
+              <option value="Valledupar">Valledupar</option>
+              <option value="Medellín">Medellín</option>
+              <option value="Barranquilla">Barranquilla</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <input type="date" id="buscarFecha" class="form-control">
+          </div>
+
+          <button id="btnBuscar" class="btn btn-primary w-100 mb-2">
+            <i class="bi bi-search"></i> Buscar
+          </button>
+          <button id="btnLimpiar" class="btn btn-outline-secondary w-100">
+            <i class="bi bi-eraser"></i> Limpiar filtros
+          </button>
         </div>
-        <div class="col-md-4">
-          <input type="date" id="buscarFecha" class="form-control">
-        </div>
-        <div class="col-md-4">
-          <button id="btnBuscar" class="btn btn-primary w-100">Buscar</button>
-        </div>
-      </div>
-    </div>
+      </aside>
 
-    <!-- Contenedor de tarjetas -->
-    <div id="eventosContainer" class="row g-4">
-      <!-- Aquí se mostrarán los eventos -->
+      <!-- ======================================================
+           🟦 SECCIÓN DE EVENTOS DISPONIBLES
+           ====================================================== -->
+      <main class="col-lg-8 col-md-8">
+        <div class="row" id="eventosContainer">
+          <!-- Aquí se mostrarán las tarjetas de eventos dinámicamente -->
+        </div>
+      </main>
     </div>
   </div>
 
-  <script src="./js/eventosPublicos.js"></script>
+  <!-- Bootstrap JS y script principal -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/eventosPublicos.js"></script>
 </body>
 </html>
