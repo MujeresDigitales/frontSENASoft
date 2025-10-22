@@ -1,0 +1,51 @@
+body {
+  background: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.form-container {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #4e73df;
+}
+
+.btn-primary {
+  background-color: #4e73df;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #3757c4;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #333;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #4e73df !important;
+  box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25) !important;
+}

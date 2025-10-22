@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo de Boletería</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-light">
+
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Gestión de Boletería</h2>
+
+    <form id="boleteriaForm" class="card p-4 shadow-sm" action="" method="POST"> 
+      <div class="mb-3">
+        <label for="eventoSelect" class="form-label">Evento</label>
+        <select id="eventoSelect" class="form-select" required>
+          <option value="">Seleccione un evento</option>
+          <option value="value1">Evento de flores medellin</option>
+          <option value="value2">pereirra</option>
+          <option value="value3">jajaj</option>
+
+
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="localidad" class="form-label">Localidad</label>
+        <input type="text" id="localidad" class="form-control" placeholder="Ej. VIP, general, referencial" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="valor" class="form-label">Valor de la boleta</label>
+        <input type="number" id="valor" class="form-control" placeholder="Ej. 50000" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="cantidad" class="form-label">Cantidad disponible</label>
+        <input type="number" id="cantidad" class="form-control" placeholder="Ej. 200" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Guardar Boletería</button>
+    </form>
+  </div>
+
+  <script src="../js/boleteria.js"></script>
+</body>
+</html>
