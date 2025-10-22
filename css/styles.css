@@ -1,57 +1,154 @@
+/* ============================
+   🎨 ESTILOS GLOBALES
+   ============================ */
+
+/* Fuente general y colores */
+:root {
+  --color-primary: #6C63FF;
+  --color-secondary: #F3F4FF;
+  --color-text: #2E2E2E;
+  --color-muted: #6C757D;
+  --color-success: #28A745;
+  --color-danger: #DC3545;
+  --color-bg: #FFFFFF;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
 body {
-  background: white;
-  min-height: 100vh;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  margin: 0;
+  padding: 0;
 }
 
-.form-container {
-  background: #fff;
-  padding: 2.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* ============================
+   🧭 CABECERA / NAVBAR
+   ============================ */
+.navbar {
+  background-color: var(--color-primary);
+  padding: 1rem 2rem;
+  color: white;
+  box-shadow: var(--shadow);
 }
 
-.hover-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
-}
-
-.form-container:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 1.5rem;
+.navbar-brand {
   font-weight: 600;
-  color: #4e73df;
+  color: white !important;
 }
 
-.btn-primary {
-  background-color: #4e73df;
+.nav-link {
+  color: white !important;
+  margin-right: 1rem;
+  transition: opacity 0.3s;
+}
+
+.nav-link:hover {
+  opacity: 0.8;
+}
+
+/* ============================
+   📋 TARJETAS
+   ============================ */
+.card {
   border: none;
-  transition: background-color 0.3s ease;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+  background-color: var(--color-bg);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h5 {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.card p {
+  color: var(--color-muted);
+}
+
+/* ============================
+   🔘 BOTONES
+   ============================ */
+.btn-primary {
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  transition: background-color 0.3s;
 }
 
 .btn-primary:hover {
-  background-color: #3757c4;
+  background-color: #5A52E0;
 }
 
-.form-label {
+.btn-outline-primary {
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* ============================
+   🧾 FORMULARIOS
+   ============================ */
+input, select, textarea {
+  border-radius: 8px !important;
+  border: 1px solid #ccc !important;
+  padding: 10px !important;
+}
+
+label {
   font-weight: 500;
-  color: #333;
+  color: var(--color-text);
 }
 
-input:focus,
-textarea:focus {
-  border-color: #4e73df !important;
-  box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25) !important;
+/* ============================
+   🟢 BADGES / ETIQUETAS
+   ============================ */
+.badge-success {
+  background-color: var(--color-success);
+  color: white;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+}
+
+/* ============================
+   ⚙️ FILTROS Y BÚSQUEDAS
+   ============================ */
+.filter-box {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.filter-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* ============================
+   📱 RESPONSIVE
+   ============================ */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+  }
 }
