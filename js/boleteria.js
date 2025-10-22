@@ -61,6 +61,18 @@ async function cargarLocalidades() {
 document.getElementById("boleteriaForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  // Validar usuario logeado
+  const userId = localStorage.getItem('userId');
+  if (!userId) {
+
+    if (typeof $ !== 'undefined' && $('#modalRegistro').length) {
+      $('#modalRegistro').modal('show');
+    } else {
+      alert('Debes iniciar sesión o registrarte para comprar.');
+    }
+    return;
+  }
+
   const eventoId = document.getElementById("eventoSelect").value;
   const localidadId = document.getElementById("localidadSelect").value;
   const valor = parseFloat(document.getElementById("valor").value);
@@ -76,7 +88,8 @@ document.getElementById("boleteriaForm").addEventListener("submit", async (e) =>
     eventoId: eventoId,
     localidadId: localidadId,
     valor: valor,
-    cantidadTotal: cantidadTotal
+    cantidadTotal: cantidadTotal,
+    userId: userId
   };
 
   try {

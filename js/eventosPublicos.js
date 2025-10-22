@@ -102,13 +102,25 @@ function mostrarEventos(listaEventos) {
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <p class="fw-bold text-primary mb-0">${evento.localidades && evento.localidades.length > 0 ? `Desde $${evento.localidades[0].valor.toLocaleString()}` : ''}</p>
-              <button class="btn btn-sm btn-primary">Ver detalles</button>
+              <button class="btn btn-sm btn-primary btn-comprar">Comprar</button>
             </div>
           </div>
         </div>
       </div>
     `;
     contenedorEventos.appendChild(card);
+
+    // Agregar funcionalidad al botón comprar
+    const btnComprar = card.querySelector('.btn-comprar');
+    btnComprar.addEventListener('click', function() {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        window.location.href = '../register.html';
+      } else {
+        alert('Usuario autenticado, puedes continuar con la compra.');
+        window.location.href = '../consultaEvento.html'
+      }
+    });
   });
 }
 
