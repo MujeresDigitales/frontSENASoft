@@ -1,32 +1,41 @@
 
-// Cargar usuarios registrados desde localStorage
-
-const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+const API_BASE_URL = 'http://localhost:8080';
 const form = document.getElementById("loginForm");
 const mensaje = document.getElementById("mensaje");
 
-
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const correo = document.getElementById("correo").value.trim();
   const contrasena = document.getElementById("contrasena").value.trim();
 
-  // Buscar usuario en la lista
-  const usuario = usuarios.find(u => u.correo === correo && u.contrasena === contrasena);
+  const loginData = {
+    email: correo,
+    contrasena: contrasena
+  };
 
-  if (usuario) {
-    // Guardar sesión activa
-    localStorage.setItem("usuarioActivo", JSON.stringify(usuario));
-    mensaje.textContent = "Inicio de sesión exitoso.";
-    mensaje.className = "text-success text-center";
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/usuarios/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loginData)
+    });
 
-    // Redirigir después de un pequeño tiempo
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 1000);
-  } else {
-    mensaje.textContent = "Usuario o contraseña incorrectos.";
+    if (response.ok) {
+      const usuario = await response.json();
+      localStorage.setItem("usuarioActivo", JSON.stringify(usuario));
+      localStorage.setItem("userId", usuario.id); // Para el flujo de compra
+      mensaje.textContent = "Inicio de sesión exitoso.";
+      mensaje.className = "text-success text-center";
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1000);
+    } else {
+      mensaje.textContent = "Usuario o contraseña incorrectos.";
+      mensaje.className = "text-danger text-center";
+    }
+  } catch (error) {
+    mensaje.textContent = "No se pudo conectar con el servidor.";
     mensaje.className = "text-danger text-center";
   }
 });

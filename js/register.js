@@ -1,15 +1,10 @@
-// Cargar usuarios existentes
-const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+const API_BASE_URL = 'http://localhost:8080';
 const form = document.getElementById("registerForm");
 const mensaje = document.getElementById("mensaje");
 
-// Escuchar submit
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  registrarUsuario();
-});
 
-function registrarUsuario() {
   // Capturar valores
   const nombres = document.getElementById("nombres").value.trim();
   const apellidos = document.getElementById("apellidos").value.trim();
@@ -34,47 +29,40 @@ function registrarUsuario() {
     return;
   }
 
-  // Validación 3: Correo único
-  const correoExiste = usuarios.find(u => u.correo === correo);
-  if (correoExiste) {
-    mensaje.textContent = "Este correo ya está registrado";
-    mensaje.className = "text-danger text-center mt-2 fw-bold";
-    return;
-  }
-
-  // Validación 4: Documento único
-  const docExiste = usuarios.find(u => u.numeroDocumento === numDoc);
-  if (docExiste) {
-    mensaje.textContent = "Este número de documento ya está registrado";
-    mensaje.className = "text-danger text-center mt-2 fw-bold";
-    return;
-  }
-
-  // Crear nuevo usuario
+  // Crear usuario para backend
   const nuevoUsuario = {
-    nombres: nombres,
-    apellidos: apellidos,
+    nombreUsuario: nombres,
+    apellidosUsuario: apellidos,
     tipoDocumento: tipoDoc,
     numeroDocumento: numDoc,
-    correo: correo,
+    email: correo,
     contrasena: contrasena,
-    telefono: telefono || "",
-    rol: "comprador",
-    fechaRegistro: new Date().toISOString()
+    confirmarContrasena: confirmarContrasena,
+    telefono: telefono
+    // rol no se envía, el backend lo asigna como "COMPRADOR"
   };
 
-  // Guardar
-  usuarios.push(nuevoUsuario);
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/usuarios/registrar`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevoUsuario)
+    });
 
-  // Mensaje éxito
-  mensaje.textContent = "¡Registro exitoso!";
-  mensaje.className = "text-success text-center mt-2 fw-bold";
-  
-  form.reset();
-
-  // Redirigir
-  setTimeout(() => {
-    window.location.href = "login.html";
-  }, 1500);
-}
+    if (response.ok) {
+      mensaje.textContent = "¡Registro exitoso!";
+      mensaje.className = "text-success text-center mt-2 fw-bold";
+      form.reset();
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 1500);
+    } else {
+      const errorText = await response.text();
+      mensaje.textContent = `Error: ${errorText}`;
+      mensaje.className = "text-danger text-center mt-2 fw-bold";
+    }
+  } catch (error) {
+    mensaje.textContent = "No se pudo conectar con el servidor";
+    mensaje.className = "text-danger text-center mt-2 fw-bold";
+  }
+});

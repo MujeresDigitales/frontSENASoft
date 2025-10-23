@@ -90,7 +90,7 @@ if (form) {
         form.reset();
       } else {
         const errorText = await response.text();
-        alert('Error al registrar artista: ' + errorText);
+        alert('Error al registrar artista ' + errorText);
       }
     } catch (err) {
       alert('No se pudo conectar con el servidor');
