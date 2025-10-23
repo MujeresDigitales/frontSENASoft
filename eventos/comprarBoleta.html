@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compra de Boletas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/compra.css">
+</head>
+<body class="bg-light">
+
+  <div class="container py-5">
+   
+
+      <form id="formCompra" class="d-none">
+        <div class="mb-3">
+          <label for="documento" class="form-label">Número de Documento</label>
+          <input type="text" id="documento" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="evento" class="form-label">Evento</label>
+          <select id="evento" class="form-select" required>
+            <option value="">Seleccione un evento</option>
+            <option value="1">Concierto de Verano</option>
+            <option value="2">Festival de Rock</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="localidad" class="form-label">Localidad</label>
+          <select id="localidad" class="form-select" required>
+            <option value="">Seleccione una localidad</option>
+            <option value="VIP">VIP</option>
+            <option value="General">General</option>
+            <option value="Preferencial">Preferencial</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="cantidad" class="form-label">Cantidad de Boletas</label>
+            <input type="number" id="cantidad" class="form-control" min="1" max="10" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="valorTotal" class="form-label">Valor Total</label>
+            <input type="text" id="valorTotal" class="form-control" readonly />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="tarjeta" class="form-label">Número de Tarjeta</label>
+          <input type="text" id="tarjeta" class="form-control" maxlength="15" required placeholder="Ej: 123456789012345" />
+        </div>
+
+        <div class="mb-3">
+          <label for="estado" class="form-label">Estado de la Transacción</label>
+          <input type="text" id="estado" class="form-control" value="Pendiente" readonly />
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary px-5">Confirmar Compra</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../comprarBoleta.js"></script>
+</body>
+</html>
