@@ -6,11 +6,11 @@ const mensaje = document.getElementById("mensaje");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const correo = document.getElementById("correo").value.trim();
+  const email = document.getElementById("correo").value.trim();
   const contrasena = document.getElementById("contrasena").value.trim();
 
   const loginData = {
-    email: correo,
+    email: email,
     contrasena: contrasena
   };
 
@@ -27,9 +27,9 @@ form.addEventListener("submit", async (e) => {
       localStorage.setItem("userId", usuario.id); // Para el flujo de compra
       mensaje.textContent = "Inicio de sesión exitoso.";
       mensaje.className = "text-success text-center";
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1000);
+        setTimeout(() => {
+          window.location.href = "eventos/consultaEventos.html";
+        }, 1000);
     } else {
       mensaje.textContent = "Usuario o contraseña incorrectos.";
       mensaje.className = "text-danger text-center";

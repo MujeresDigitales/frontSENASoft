@@ -10,7 +10,7 @@ form.addEventListener("submit", async (e) => {
   const apellidos = document.getElementById("apellidos").value.trim();
   const tipoDoc = document.getElementById("tipo_documento").value;
   const numDoc = document.getElementById("numero_documento").value.trim();
-  const correo = document.getElementById("correo").value.trim();
+  const correo = document.getElementById("email").value.trim();
   const contrasena = document.getElementById("contrasena").value.trim();
   const confirmarContrasena = document.getElementById("confirmar_contrasena").value.trim();
   const telefono = document.getElementById("telefono").value.trim();
@@ -39,7 +39,7 @@ form.addEventListener("submit", async (e) => {
     contrasena: contrasena,
     confirmarContrasena: confirmarContrasena,
     telefono: telefono
-    // rol no se envía, el backend lo asigna como "COMPRADOR"
+   
   };
 
   try {

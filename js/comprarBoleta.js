@@ -1,161 +1,120 @@
+// Configuración del backend
+const API_BASE_URL = 'http://localhost:8080';
 
-
-
-const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
-const alertaSesion = document.getElementById('alertaSesion');
-const formCompra = document.getElementById('formCompra');
-
-// Si el usuario NO ha iniciado sesión
-if (!usuarioActivo) {
-  alertaSesion.classList.remove('d-none');
-  formCompra.classList.add('d-none');
-
-  // Redirige automáticamente al login después de 2 segundos
-  setTimeout(() => {
-    window.location.href = '../login.html';
-  }, 2000);
-} else {
-  // Si hay usuario activo, mostrar formulario
-  alertaSesion.classList.add('d-none');
-  formCompra.classList.remove('d-none');
-
-  // Autocompletar documento
-  const inputDocumento = document.getElementById('documento');
-  inputDocumento.value = usuarioActivo.numeroDocumento || '';
-  inputDocumento.readOnly = true;
-}
-
-
-// 🎫 DATOS DE EVENTOS Y LOCALIDADES
-
-
-const eventosData = {
-  "1": {
-    nombre: "Concierto de Verano",
-    localidades: {
-      "VIP": { precio: 150000, disponibles: 50 },
-      "General": { precio: 80000, disponibles: 200 },
-      "Preferencial": { precio: 100000, disponibles: 120 }
-    }
-  },
-  "2": {
-    nombre: "Festival de Rock",
-    localidades: {
-      "VIP": { precio: 120000, disponibles: 30 },
-      "General": { precio: 60000, disponibles: 150 },
-      "Preferencial": { precio: 90000, disponibles: 80 }
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  // Mostrar el formulario si el usuario está registrado
+  const userId = localStorage.getItem('userId');
+  const formCompra = document.getElementById("formCompra");
+  if (userId && formCompra) {
+    formCompra.classList.remove("d-none");
   }
-};
 
-// Cargar desde localStorage o usar valores por defecto
-let inventarioEventos = JSON.parse(localStorage.getItem('inventarioEventos')) || eventosData;
+  // Cargar eventos
+  cargarEventos();
 
+  // Cuando se seleccione un evento, cargar localidades de ese evento
+  document.getElementById("evento").addEventListener("change", function() {
+    const eventoId = this.value;
+    cargarLocalidades(eventoId);
+  });
 
-// 💰 CÁLCULO DE VALOR TOTAL
+  // Calcular valor total al cambiar cantidad o localidad
+  document.getElementById("cantidad").addEventListener("input", calcularValorTotal);
+  document.getElementById("localidad").addEventListener("change", calcularValorTotal);
+});
 
-
-function calcularTotal() {
-  const eventoId = document.getElementById('evento').value;
-  const localidad = document.getElementById('localidad').value;
-  const cantidad = parseInt(document.getElementById('cantidad').value) || 0;
-
-  if (eventoId && localidad && cantidad > 0) {
-    const precio = inventarioEventos[eventoId].localidades[localidad].precio;
-    const total = precio * cantidad;
-    document.getElementById('valorTotal').value = `$${total.toLocaleString()}`;
-  } else {
-    document.getElementById('valorTotal').value = '';
+async function cargarEventos() {
+  const select = document.getElementById("evento");
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/boleteria/eventos`);
+    const eventos = await response.json();
+    select.innerHTML = '<option value="">Seleccione un evento</option>';
+    eventos.forEach(evento => {
+      const option = document.createElement("option");
+      option.value = evento.id;
+      option.textContent = `${evento.nombre} - ${evento.fechaInicio}`;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    alert("No se pudieron cargar los eventos");
   }
 }
 
-document.getElementById('evento').addEventListener('change', calcularTotal);
-document.getElementById('localidad').addEventListener('change', calcularTotal);
-document.getElementById('cantidad').addEventListener('input', calcularTotal);
-
-
-// ✅ VALIDACIONES DE CAMPOS
-
-
-// Límite de boletas por transacción
-document.getElementById('cantidad').addEventListener('input', function() {
-  if (parseInt(this.value) > 10) {
-    alert('Máximo 10 boletas por transacción.');
-    this.value = 10;
+async function cargarLocalidades(eventoId) {
+  const select = document.getElementById("localidad");
+  select.innerHTML = '<option value="">Seleccione una localidad</option>';
+  if (!eventoId) return;
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/boleteria/localidades?eventoId=${eventoId}`);
+    const localidades = await response.json();
+    localidades.forEach(localidad => {
+      const option = document.createElement("option");
+      option.value = localidad.id;
+      option.textContent = `${localidad.nombreLocalidad}`;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    alert("No se pudieron cargar las localidades");
   }
-  calcularTotal();
-});
+}
 
-// Solo permitir números en tarjeta
-document.getElementById('tarjeta').addEventListener('input', function() {
-  this.value = this.value.replace(/\D/g, '').slice(0, 15);
-});
+async function calcularValorTotal() {
+  const localidadId = document.getElementById("localidad").value;
+  const cantidad = parseInt(document.getElementById("cantidad").value) || 0;
+  let valorUnitario = 0;
+  if (localidadId) {
+    // Obtener el valor unitario de la localidad desde el backend
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/boleteria/localidad/${localidadId}`);
+      const localidad = await response.json();
+      valorUnitario = localidad.valor || 0;
+    } catch (error) {
+      valorUnitario = 0;
+    }
+  }
+  document.getElementById("valorTotal").value = valorUnitario * cantidad;
+}
 
-
-// 💳 PROCESAR COMPRA
-
-
-document.getElementById('formCompra').addEventListener('submit', function(e) {
+document.getElementById("formCompra").addEventListener("submit", async function(e) {
   e.preventDefault();
-
-  const eventoId = document.getElementById('evento').value;
-  const localidad = document.getElementById('localidad').value;
-  const cantidad = parseInt(document.getElementById('cantidad').value);
-  const tarjeta = document.getElementById('tarjeta').value;
-
-  if (!eventoId || !localidad || !cantidad) {
-    alert('Por favor, completa todos los campos.');
+  const userId = localStorage.getItem('userId');
+  if (!userId) {
+    alert('Debes iniciar sesión para comprar.');
     return;
   }
-
-  if (tarjeta.length !== 15) {
-    alert('El número de tarjeta debe tener exactamente 15 dígitos.');
+  const documento = document.getElementById("documento").value;
+  const eventoId = document.getElementById("evento").value;
+  const localidadId = document.getElementById("localidad").value;
+  const cantidad = parseInt(document.getElementById("cantidad").value);
+  const valorTotal = parseFloat(document.getElementById("valorTotal").value);
+  if (!documento || !eventoId || !localidadId || !cantidad || !valorTotal) {
+    alert("Por favor complete todos los campos");
     return;
   }
-
-  const disponibles = inventarioEventos[eventoId].localidades[localidad].disponibles;
-  if (cantidad > disponibles) {
-    alert(`Solo quedan ${disponibles} boletas disponibles en ${localidad}.`);
-    return;
-  }
-
-  const precio = inventarioEventos[eventoId].localidades[localidad].precio;
-  const total = precio * cantidad;
-
-  const compra = {
-    numeroDocumento: usuarioActivo.numeroDocumento,
-    nombreComprador: `${usuarioActivo.nombres} ${usuarioActivo.apellidos}`,
-    correoComprador: usuarioActivo.correo,
-    evento: inventarioEventos[eventoId].nombre,
-    localidad,
+  const data = {
+    documento,
+    eventoId,
+    localidadId,
     cantidad,
-    valorUnitario: precio,
-    valorTotal: total,
-    numeroTarjeta: tarjeta,
-    metodoPago: "Tarjeta de crédito",
-    estado: "Exitosa",
-    fechaCompra: new Date().toLocaleDateString('es-CO'),
-    horaCompra: new Date().toLocaleTimeString('es-CO')
+    valorTotal,
+    userId
   };
-
-  // Descontar del inventario
-  inventarioEventos[eventoId].localidades[localidad].disponibles -= cantidad;
-  localStorage.setItem('inventarioEventos', JSON.stringify(inventarioEventos));
-
-  // Guardar compra
-  const compras = JSON.parse(localStorage.getItem('compras')) || [];
-  compras.push(compra);
-  localStorage.setItem('compras', JSON.stringify(compras));
-
-  alert(`✅ Compra realizada con éxito.\n\nEvento: ${compra.evento}\nLocalidad: ${compra.localidad}\nCantidad: ${cantidad}\nTotal: $${total.toLocaleString()}`);
-
-  // Redirigir al historial
-  if (confirm('¿Deseas ver tu historial de compras?')) {
-    window.location.href = '../historialCompras.html';
-  } else {
-    this.reset();
-    document.getElementById('documento').value = usuarioActivo.numeroDocumento;
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/compra/realizar`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    if (response.ok) {
+      alert("Compra realizada correctamente");
+      e.target.reset();
+    } else {
+      const errorText = await response.text();
+      alert(`Error al realizar la compra: ${errorText}`);
+    }
+  } catch (error) {
+    alert("No se pudo conectar con el servidor");
   }
 });
-
-console.log("✅ Sistema de compra cargado correctamente");
