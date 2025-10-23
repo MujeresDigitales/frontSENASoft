@@ -5,13 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compra de Boletas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/compra.css">
+  <link rel="stylesheet" href="../css/compra.css" />
 </head>
 <body class="bg-light">
 
   <div class="container py-5">
-   
+    <div class="card shadow p-4 mx-auto" style="max-width: 700px;">
+      <h2 class="text-center mb-4">Compra de Boletas</h2>
 
+      <!-- Alerta si no hay sesión -->
+      <div id="alertaSesion" class="alert alert-danger d-none text-center">
+        Debes iniciar sesión para comprar boletas.
+      </div>
+
+      <!-- Formulario -->
       <form id="formCompra" class="d-none">
         <div class="mb-3">
           <label for="documento" class="form-label">Número de Documento</label>
@@ -66,6 +73,6 @@
     </div>
   </div>
 
-  <script src="../comprarBoleta.js"></script>
+  <script src="../js/comprarBoleta.js"></script>
 </body>
 </html>

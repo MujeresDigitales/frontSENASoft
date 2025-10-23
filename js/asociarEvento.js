@@ -1,6 +1,6 @@
-// ==========================================================
+
 // Cargar datos desde localStorage 
-// ==========================================================
+
 let eventos = JSON.parse(localStorage.getItem("eventos")) || [];
 let artistas = JSON.parse(localStorage.getItem("artistas")) || [];
 
@@ -10,9 +10,9 @@ const mensaje = document.getElementById("mensaje");
 const listaEventos = document.getElementById("listaEventos");
 const form = document.getElementById("formAsociar");
 
-// ==========================================================
+
 //  Llenar los selects dinámicamente
-// ==========================================================
+
 function cargarDatos() {
   eventoSelect.innerHTML = eventos.length
     ? `<option value="">Seleccione un evento</option>`
@@ -31,9 +31,9 @@ function cargarDatos() {
   });
 }
 
-// ==========================================================
+
 //  Mostrar eventos del artista seleccionado
-// ==========================================================
+
 artistaSelect.addEventListener("change", () => {
   const id = Number(artistaSelect.value);
   if (!id) return (listaEventos.textContent = "Selecciona un artista");
@@ -44,9 +44,9 @@ artistaSelect.addEventListener("change", () => {
     : "Este artista no tiene eventos asociados.";
 });
 
-// ==========================================================
+
 // validar si hay cruce de horarios
-// ==========================================================
+
 function hayChoque(artistaId, nuevoEvento) {
   const eventosDelArtista = eventos.filter(e => e.artistas?.includes(artistaId));
   return eventosDelArtista.some(e =>
@@ -55,9 +55,9 @@ function hayChoque(artistaId, nuevoEvento) {
   );
 }
 
-// ==========================================================
+
 //  Asociar artista al evento seleccionado
-// ==========================================================
+
 form.addEventListener("submit", e => {
   e.preventDefault();
 
